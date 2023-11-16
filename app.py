@@ -1,5 +1,5 @@
 import streamlit as st
-from dotenv import load_dotenv
+import dotenv import load_dotenv
 import pickle
 from PyPDF2 import PdfReader
 from streamlit_extras.add_vertical_space import add_vertical_space
@@ -10,7 +10,8 @@ from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
 import os
- 
+
+
 # Sidebar contents
 with st.sidebar:
     st.title('🤗💬 LLM Chat App')
@@ -29,8 +30,7 @@ load_dotenv()
  
 def main():
     st.header("Chat with PDF 💬")
- 
- 
+    
     # upload a PDF file
     pdf = st.file_uploader("Upload your PDF", type='pdf')
  
@@ -63,7 +63,8 @@ def main():
             VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
             with open(f"{store_name}.pkl", "wb") as f:
                 pickle.dump(VectorStore, f)
- 
+            # Handle timeout, e.g., retry or log the issue
+            print("OpenAI API request timed out.")
         # embeddings = OpenAIEmbeddings()
         # VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
  
