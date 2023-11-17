@@ -16,22 +16,17 @@ import openai
 
 # Sidebar contents
 with st.sidebar:
-    st.title('🤗💬 LLM Chat App')
+    st.title('LLM Doc Scanner App')
     st.markdown('''
     ## About
-    This app is an LLM-powered chatbot built using:
-    - [Streamlit](https://streamlit.io/)
-    - [LangChain](https://python.langchain.com/)
-    - [OpenAI](https://platform.openai.com/docs/models) LLM model
- 
+    This chat app is powered by OpenAI with this you can ask particular query related to a document you uploaded
     ''')
     add_vertical_space(5)
-    st.write('Made with ❤️ by [Prompt Engineer](https://youtube.com/@engineerprompt)')
  
 load_dotenv()
  
 def main():
-    st.header("Chat with PDF 💬")
+    st.header("Chat with PDF")
     
     # upload a PDF file
     pdf = st.file_uploader("Upload your PDF", type='pdf')
@@ -56,18 +51,12 @@ def main():
         st.write(f'{store_name}')
         # st.write(chunks)
  
-        if os.path.exists(f"{store_name}.pkl"):
-            with open(f"{store_name}.pkl", "rb") as f:
-                VectorStore = pickle.load(f)
-            # st.write('Embeddings Loaded from the Disk')s
-        else:
-            embeddings = OpenAIEmbeddings()
-            
-            VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
-            with open(f"{store_name}.pkl", "wb") as f:
-                pickle.dump(VectorStore, f)
-            # Handle timeout, e.g., retry or log the issue
-            print("OpenAI API request timed out.")
+        
+        embeddings = OpenAIEmbeddings()
+        VectorStore =FAISS.from_texts(chunks, embedding=embeddings)
+        with open(f"{store_name}.pkl", "wb") as f:
+            pickle.dump(VectorStore, f)    # Handle timeout, e.g., retry or log the issue
+        print("OpenAI API request timed out.")
         # embeddings = OpenAIEmbeddings()
         # VectorStore = FAISS.from_texts(chunks, embedding=embeddings)
  
